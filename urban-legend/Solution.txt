@@ -1,4 +1,5 @@
 Solution Steps
+==============
 
 Scan through queries in the order they arrive.
 Remove the search engine that matches the first query.

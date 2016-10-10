@@ -10,4 +10,3 @@ At this point we need to switch the search engine, add all the search engine bac
 Repeat above steps until all the queries are scanned.
 
 Above is a viable start for the solution, keep on looking to optimize.
-Also include snapshot of the solution work that is being done on notebook/whiteboard.

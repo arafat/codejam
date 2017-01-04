@@ -15,6 +15,7 @@ def GetInputData(file_location, num_level_per_test, num_input_per_level=None):
     file_location: string, location of the input file relative to base dir,
         file is located on the same machine.
     num_level_per_test: int, number of input sections per test case.
+    num_input_per_level: int, when number of input per level is fixed.
 
   Yields:
     List of list of input data.
@@ -33,10 +34,3 @@ def GetInputData(file_location, num_level_per_test, num_input_per_level=None):
           inp.append(fp.readline().strip())
         input.append(inp)
       yield input
-
-
-if __name__ == '__main__':
-  print 'I am in main.'
-  gen = GetInputData('urban-legend/testdata/input.txt', 2)
-  import pdb; pdb.set_trace()
-  print 'Done'

@@ -1,7 +1,7 @@
 from timeit import timeit
 from utils import utils
 
-_INPUT_DATA_FILE_LOCATION = 'minimum_scalar_product/test_data/minimum_scalar_product.in'
+_INPUT_DATA_FILE_LOCATION = 'minimum_scalar_product/test_data/minimum_scalar_product_large.in'
 
 def CalculateMinimumScalarProduct(scalar1, scalar2):
   scalar1 = sorted(scalar1)

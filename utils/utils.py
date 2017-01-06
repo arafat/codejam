@@ -4,7 +4,8 @@ import os
 import config
 
 
-def GetInputData(file_location, num_level_per_test, num_input_per_level=None):
+def GetInputData(
+    file_location, num_level_per_test, num_input_per_level=None, have_sep=True):
   """Generate input data from the input file.
 
   There can be multiple test cases and each test case can have multiple
@@ -16,6 +17,7 @@ def GetInputData(file_location, num_level_per_test, num_input_per_level=None):
         file is located on the same machine.
     num_level_per_test: int, number of input sections per test case.
     num_input_per_level: int, when number of input per level is fixed.
+    have_sep: bool, in some cases there is no seperator between input data lines.
 
   Yields:
     List of list of input data.
@@ -26,10 +28,10 @@ def GetInputData(file_location, num_level_per_test, num_input_per_level=None):
     for _ in xrange(num_test_cases):
       input = []
       for level in xrange(num_level_per_test):
-        line = fp.readline()
         inp = []
-        if not num_input_per_level:
-          num_input_per_level = int(line.strip())
+        if have_sep:
+          num_input_per_level = (
+              num_input_per_level if num_input_per_level else int(fp.readline().strip()))
         for _ in xrange(num_input_per_level):
           inp.append(fp.readline().strip())
         input.append(inp)

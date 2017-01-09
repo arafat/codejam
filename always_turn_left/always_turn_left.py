@@ -57,10 +57,8 @@ def GetMazeDefination(path, return_path):
   row = 0; col = 0
   # ['N', 'S', 'W', 'E']
   grid = {(0, 0): [1, 0, 0, 0]}
-  new_path = path[1:-1] + 'RR' + return_path[1:-1]
-  import pdb; pdb.set_trace()
-  for cmd in new_path:
-#    import pdb; pdb.set_trace()
+#  new_path = path[1:-1] + 'RR' + return_path[1:-1]
+  for cmd in path[1:-1]:
     if cmd == _WALK:
       grid[(row, col)][GetWallIndex(direction, False)] = 1
       if direction == 'SOUTH':
@@ -71,16 +69,34 @@ def GetMazeDefination(path, return_path):
         col -= 1
       elif direction == 'EAST':
         col += 1
-      room = [0, 0, 0, 0]
-      room[GetWallIndex(direction)] = 1
-      grid[(row, col)] = room
-#      grid[(row, col)][_ROOM_CONFIG_INDEX_MAP[direction]] = 1
+      if not (row, col) in grid:
+        grid[(row, col)] = [0, 0, 0, 0]
+      grid[(row, col)][GetWallIndex(direction)] = 1
       print 'Its a walk command.'
     else:
-#      prev_direction = direction
+      direction = GetNewDirection(direction, cmd)
+  direction = _DIRECTION_FLIP_MAP[direction]
+  room = [0, 0, 0, 0]
+  room[GetWallIndex(direction)] = 1
+  grid[(row, col)] = room
+  for cmd in return_path[1:-1]:
+    if cmd == _WALK:
+      grid[(row, col)][GetWallIndex(direction, False)] = 1
+      if direction == 'SOUTH':
+        row -= 1
+      elif direction == 'NORTH':
+        row += 1
+      elif direction == 'WEST':
+        col -= 1
+      elif direction == 'EAST':
+        col += 1
+      if not (row, col) in grid:
+        grid[(row, col)] = [0, 0, 0, 0]
+      grid[(row, col)][GetWallIndex(direction)] = 1
+      print 'Its a walk command.'
+    else:
       direction = GetNewDirection(direction, cmd)
   return grid
-#  return path, return_path
 
 
 def Run():

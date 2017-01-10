@@ -52,51 +52,42 @@ def GetWallIndex(direction, entering=True):
   return _ROOM_CONFIG_INDEX_MAP[direction]
 
 
+def UpdateMazeConfiguration(maze, step, row, col, current_direction):
+  if step == _WALK:
+    maze[(row, col)][GetWallIndex(current_direction, False)] = 1
+    if current_direction == 'SOUTH':
+      row -= 1
+    elif current_direction == 'NORTH':
+      row += 1
+    elif current_direction == 'WEST':
+      col -= 1
+    elif current_direction == 'EAST':
+      col += 1
+    if not (row, col) in maze:
+      maze[(row, col)] = [0, 0, 0, 0]
+      maze[(row, col)][GetWallIndex(direction)] = 1
+      print 'Its a walk command.'
+  else:
+    current_direction = GetNewDirection(current_direction, step)
+  return maze, row, col, current_direction
+
+
 def GetMazeDefination(path, return_path):
   direction = 'SOUTH'
   row = 0; col = 0
   # ['N', 'S', 'W', 'E']
-  grid = {(0, 0): [1, 0, 0, 0]}
-#  new_path = path[1:-1] + 'RR' + return_path[1:-1]
-  for cmd in path[1:-1]:
-    if cmd == _WALK:
-      grid[(row, col)][GetWallIndex(direction, False)] = 1
-      if direction == 'SOUTH':
-        row -= 1
-      elif direction == 'NORTH':
-        row += 1
-      elif direction == 'WEST':
-        col -= 1
-      elif direction == 'EAST':
-        col += 1
-      if not (row, col) in grid:
-        grid[(row, col)] = [0, 0, 0, 0]
-      grid[(row, col)][GetWallIndex(direction)] = 1
-      print 'Its a walk command.'
-    else:
-      direction = GetNewDirection(direction, cmd)
+  maze = {(row, col): [1, 0, 0, 0]}
+  for step in path[1:-1]:
+    maze, row, col, direction = UpdateMazeConfiguration(
+        maze, step, row, col, direction)
   direction = _DIRECTION_FLIP_MAP[direction]
   room = [0, 0, 0, 0]
   room[GetWallIndex(direction)] = 1
-  grid[(row, col)] = room
-  for cmd in return_path[1:-1]:
-    if cmd == _WALK:
-      grid[(row, col)][GetWallIndex(direction, False)] = 1
-      if direction == 'SOUTH':
-        row -= 1
-      elif direction == 'NORTH':
-        row += 1
-      elif direction == 'WEST':
-        col -= 1
-      elif direction == 'EAST':
-        col += 1
-      if not (row, col) in grid:
-        grid[(row, col)] = [0, 0, 0, 0]
-      grid[(row, col)][GetWallIndex(direction)] = 1
-      print 'Its a walk command.'
-    else:
-      direction = GetNewDirection(direction, cmd)
-  return grid
+  maze[(row, col)] = room
+  for step in return_path[1:-1]:
+    maze, row, col, direction = UpdateMazeConfiguration(
+        maze, step, row, col, direction)
+  return maze
 
 
 def Run():
@@ -105,4 +96,3 @@ def Run():
     path, return_path = input[0][0].split(' ')
     print GetMazeDefination(path, return_path)
     break
-  print 'This is Run method.'

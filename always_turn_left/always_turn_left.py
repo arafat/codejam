@@ -65,7 +65,7 @@ def UpdateMazeConfiguration(maze, step, row, col, current_direction):
       col += 1
     if not (row, col) in maze:
       maze[(row, col)] = [0, 0, 0, 0]
-      maze[(row, col)][GetWallIndex(direction)] = 1
+      maze[(row, col)][GetWallIndex(current_direction)] = 1
       print 'Its a walk command.'
   else:
     current_direction = GetNewDirection(current_direction, step)
@@ -81,9 +81,8 @@ def GetMazeDefination(path, return_path):
     maze, row, col, direction = UpdateMazeConfiguration(
         maze, step, row, col, direction)
   direction = _DIRECTION_FLIP_MAP[direction]
-  room = [0, 0, 0, 0]
-  room[GetWallIndex(direction)] = 1
-  maze[(row, col)] = room
+  maze[(row, col)] = [0, 0, 0, 0]
+  maze[(row, col)][GetWallIndex(direction)] = 1
   for step in return_path[1:-1]:
     maze, row, col, direction = UpdateMazeConfiguration(
         maze, step, row, col, direction)

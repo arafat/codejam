@@ -94,4 +94,3 @@ def Run():
   for input in in_iter:
     path, return_path = input[0][0].split(' ')
     print GetMazeDefination(path, return_path)
-    break
